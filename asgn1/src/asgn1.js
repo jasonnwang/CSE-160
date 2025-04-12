@@ -22,6 +22,7 @@ let gl;
 let a_Position;
 let u_FragColor;
 let u_Size;
+let isDragging = false;
 
 function setupWebGL(){
   // Retrieve <canvas> element
@@ -71,6 +72,7 @@ let g_selectedColor;
 let g_selectedSize;
 let g_selectedType = POINT;
 let g_selectedSegmentCount;
+let g_prevPoint = null;
 
 // Set up actions for HTML UI elements
 function addActionsForHtmlUI(){
@@ -112,8 +114,21 @@ function main() {
   addActionsForHtmlUI();
 
   // Register function (event handler) to be called on a mouse press
-  canvas.onmousedown = click;
-  canvas.onmousemove = function(ev) { if(ev.buttons == 1) { click(ev) }};
+canvas.onmousedown = function(ev) {
+  isDragging = true;
+  click(ev); // also calls interpolation
+};
+
+canvas.onmousemove = function(ev) {
+  if (isDragging) {
+    click(ev); // fills between previous and current point
+  }
+};
+
+canvas.onmouseup = function(ev) {
+  isDragging = false;
+  g_prevPoint = null; // reset prev point on mouse release
+};
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -131,27 +146,52 @@ var g_sizes = [];
 var g_shapesList = [];
 
 function click(ev) {
+  let [x, y] = convertCoordinatesEventToGL(ev);
+  let newPoint = [x, y];
 
-  // Extract the event click and return it in WebGL coords
-  let [x,y] = convertCoordinatesEventToGL(ev);
-  // Store the coordinates to g_points array
-  let point;
-  if (g_selectedType == POINT) {
-    point = new Point();
-  } else if (g_selectedType == TRIANGLE){
-    point = new Triangle();
+  // Only interpolate if dragging
+  if (isDragging && g_prevPoint) {
+    let [x0, y0] = g_prevPoint;
+    let dx = x - x0;
+    let dy = y - y0;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    let steps = Math.ceil(distance / 0.02);
+
+    for (let i = 1; i <= steps; i++) {
+      let interpX = x0 + (dx * i / steps);
+      let interpY = y0 + (dy * i / steps);
+
+      let shape = createShape([interpX, interpY]);
+      g_shapesList.push(shape);
+    }
   } else {
-    point = new Circle();
-    point.segments = g_selectedSegmentCount;
+    // Just a single click — add one shape
+    let shape = createShape(newPoint);
+    g_shapesList.push(shape);
   }
-  point.position = [x,y];
-  point.color = g_selectedColor.slice();
-  point.size = g_selectedSize;
-  g_shapesList.push(point);
 
-  // Draw all shapes
+  g_prevPoint = newPoint;
   renderAllShapes();
 }
+
+function createShape(position) {
+  let shape;
+  if (g_selectedType == POINT) {
+    shape = new Point();
+  } else if (g_selectedType == TRIANGLE) {
+    shape = new Triangle();
+  } else {
+    shape = new Circle();
+    shape.segments = g_selectedSegmentCount;
+  }
+
+  shape.position = position;
+  shape.color = g_selectedColor.slice();
+  shape.size = g_selectedSize;
+
+  return shape;
+}
+
 
 function convertCoordinatesEventToGL(ev) {
   var x = ev.clientX; // x coordinate of a mouse pointer
