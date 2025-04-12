@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Draw a point (1)</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+    Please use a browser that supports "canvas"
+    </canvas>
+
+    <div>
+      <button type="button" id="clear">Clear Canvas</button>
+    </div>
+
+    <div>
+      <label>Drawing Mode:</label>
+      <button type="button" id="pointButton">Square</button>
+      <button type="button" id="triButton">Triangle</button>
+      <button type="button" id="cirButton">Circle</button>
+    </div>
+
+    <div>
+      <label>Red</label>
+      <input type="range" min="0" max="100" value="50" class="slider" id="redSlider">
+      <label>Green</label>
+      <input type="range" min="0" max="100" value="50" class="slider" id="greenSlider">
+      <label>Blue</label>
+      <input type="range" min="0" max="100" value="50" class="slider" id="blueSlider">
+    </div>
+      <label>Shape Size:</label>
+      <input type="range" min="5" max="40" value="23" class="slider" id="sizeSlider">
+      <label for="segmentSlider">(Circles) Segment Count:</label>
+    <input type="range" id="segmentSlider" min="5" max="25" value="15">
+    
+    <div>
+      <button id="showDrawingButton">Show Drawing</button>
+    </div>
+
+    <h3>My Hand-Drawn Triangle Sketch (Reference)</h3>
+    <img id="referenceImage" src="reference.png" width="400" alt="Drawing">
+
+    <script src="../lib/webgl-utils.js"></script>
+    <script src="../lib/webgl-debug.js"></script>
+    <script src="../lib/cuon-utils.js"></script>
+    <script src="Point.js"></script>
+    <script src="Triangle.js"></script>
+    <script src="Circle.js"></script>
+    <script src="asgn1.js"></script>
+  </body>
+</html>
