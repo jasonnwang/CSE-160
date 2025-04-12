@@ -192,7 +192,6 @@ function createShape(position) {
   return shape;
 }
 
-
 function convertCoordinatesEventToGL(ev) {
   var x = ev.clientX; // x coordinate of a mouse pointer
   var y = ev.clientY; // y coordinate of a mouse pointer
