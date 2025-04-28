@@ -212,7 +212,7 @@ function renderAllShapes(){
   var earRight = new Cube();
   earRight.color = [0.5, 0.3, 0.15, 1.0];
   earRight.matrix = new Matrix4(headCoordMat);
-  earRight.matrix.translate(0.0, 0.05, -0.0);
+  earRight.matrix.translate(0.0, 0.05, -0.04);
   earRight.matrix.scale(0.08, 0.15, 0.04);
   earRight.render();
 
