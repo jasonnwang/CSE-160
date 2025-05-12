@@ -468,6 +468,27 @@ function drawBatch(vertices, uvs, textureNum) {
   gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
 }
 
+function modifyBlock(value) {
+  let forward = new Vector3(camera.at.elements);
+  forward.sub(camera.eye);
+  forward.normalize();
+
+  let targetX = Math.round(camera.eye.elements[0] + forward.elements[0]) + 16;
+  let targetY = Math.round(camera.eye.elements[1]);
+  let targetZ = Math.round(camera.eye.elements[2] + forward.elements[2]) + 16;
+
+  if (targetX >= 0 && targetX < 32 && targetZ >= 0 && targetZ < 32) {
+    if (value === 1) {
+      g_map[targetX][targetZ] = Math.min(g_map[targetX][targetZ] + 1, 4); // Max height of 4
+    } else if (value === -1) {
+      g_map[targetX][targetZ] = Math.max(g_map[targetX][targetZ] - 1, 0); // Min height of 0
+    }
+    console.log(`Block at (${targetX}, ${targetZ}) modified to height: ${g_map[targetX][targetZ]}`);
+  } else {
+    console.log(`Target block is out of bounds: ${targetX} ${targetY} ${targetZ}`);
+  }
+  renderAllShapes();
+}
 
 
 function renderAllShapes() {
