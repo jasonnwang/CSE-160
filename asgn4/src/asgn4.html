@@ -1,0 +1,132 @@
+<!-- Jason Wang -->
+<!-- jwang689@ucsc.edu -->
+<!-- Grader Notes: If the canvas is not loading, please try Safari/Firefox! -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Virtual World Exploration</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #222;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #container {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      #webgl {
+        width: 600;
+        height: 600;
+        background-color: black;
+      }
+
+      #controls {
+        background-color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        line-height: 1.5;
+        width: 250px;
+        text-align: left;
+      }
+
+      #controls h3 {
+        margin: 5px 0;
+        font-size: 16px;
+      }
+
+      #controls ul {
+        padding-left: 15px;
+        margin: 5px 0;
+        list-style-type: none;
+      }
+
+      #controls p {
+        margin: 5px 0;
+      }
+
+      #angleSlide {
+        width: 200px;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="container">
+      <canvas id="webgl" width="600" height="600">
+        Please use a browser that supports "canvas"
+      </canvas>
+
+      <div id="controls">
+        <h3>Controls:</h3>
+        <p><strong>Movement:</strong></p>
+        <ul>
+          <li>W - Move Forward</li>
+          <li>S - Move Backward</li>
+          <li>A - Move Left</li>
+          <li>D - Move Right</li>
+          <li>Q - Pan Left</li>
+          <li>E - Pan Right</li>
+        </ul>
+        <p><strong>Block Actions:</strong></p>
+        <ul>
+          <li>P - Place a Block</li>
+          <li>O - Remove a Block</li>
+        </ul>
+        <p><strong>Pointer Lock:</strong></p>
+        <ul>
+          <li>Click the canvas to engage mouse control (pointer lock).</li>
+          <li>Press "ESC" to release the mouse.</li>
+        </ul>
+        <p>
+          Camera Angle:
+          <input
+            type="range"
+            min="0"
+            max="360"
+            value="5"
+            class="slider"
+            id="angleSlide"
+          />
+        </p>
+        <p><strong>Visuals:</strong></p>
+        <p>
+          Light Position:
+          <input type="range" min="-90" max="90" value="0" id="lightSlide" />
+        </p>
+        <p>
+          Light Color:
+          <input type="color" id="lightColor" value="#ffffff" />
+        </p>
+        <p>
+          <button id="toggleLightingBtn">Toggle Lighting</button>
+          <button id="toggleNormalsBtn" onclick="toggleNormals()">
+            Toggle Normals
+          </button>
+        </p>
+        <p><button id="toggleSpotlightBtn">Toggle Spotlight</button></p>
+        <p id="numdot">FPS:</p>
+      </div>
+    </div>
+
+    <script src="../lib/webgl-utils.js"></script>
+    <script src="../lib/webgl-debug.js"></script>
+    <script src="../lib/cuon-utils.js"></script>
+    <script src="../lib/cuon-matrix-cse160.js"></script>
+    <script src="Triangle.js"></script>
+    <script src="Cube.js"></script>
+    <script src="Sphere.js"></script>
+    <script src="camera.js"></script>
+    <script src="asgn4.js"></script>
+  </body>
+</html>
